@@ -1,0 +1,52 @@
+﻿@model List<Category>
+
+    @{
+        ViewBag.Title = "Add Category";
+    }
+
+<form asp-controller="Admin" asp-action="AddCategory" method="post" class="mt-2" style="width: 400px"  >
+<h3>Add Category</h3>
+    <div class="d-flex gap-2">
+        <input name="Name" placeholder="Enter Category Name" class="form-control" required/>
+
+
+    <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+
+</form>
+<hr />
+    <h4><strong>Categories</strong></h4>
+<div class="text-center" style="width: 400px">
+    @foreach(var category in Model)
+    {
+        <div class="d-flex gap-2">
+
+        <p class="fw-bold form-control my-2">@category.Name</p>
+
+            <button type="button" class="btn btn-danger my-2" data-bs-toggle="modal" data-bs-target="#deleteModal-@category.CategoryId">
+                Delete
+            </button>
+
+            <div class="modal fade" id="deleteModal-@category.CategoryId" tabindex="-1" aria-labelledby="deleteModalLabel-@category.CategoryId" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form asp-controller="Admin" asp-action="DeleteCategory" asp-route-id="@category.CategoryId" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel-@category.CategoryId">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete: <strong>@category.Name</strong>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

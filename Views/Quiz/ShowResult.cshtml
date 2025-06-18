@@ -1,0 +1,60 @@
+﻿
+@model List<UserAnswer>
+
+@{
+    ViewData["Title"] = "Your Quiz Result";
+    int score = (int)ViewBag.Score;
+    int total = (int)TempData["Total"];
+    TempData.Keep("Total");
+}
+
+<h2 class="mt-2">@ViewData["Title"]</h2>
+<div class="d-flex justify-content-between">
+<h4 class="fw-bold">Score: @score / @total</h4>
+<div class="d-flex justify-content-between">
+<a asp-controller="Quiz" asp-action="RestartQuiz" class="btn btn-success mb-4" asp-route-categoryId="@ViewBag.CategoryId"> &#11013; Attempt Again</a>
+</div>
+
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Your Answer</th>
+            <th>Correct Answer</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var answer in Model)
+        {
+            var correctAnswer = answer.Question.Answers.FirstOrDefault(a => a.IsCorrect);
+            <tr>
+                <td>@answer.Question.Text</td>
+                <td>@answer.SelectedAnswer.Text</td>
+                <td>@correctAnswer?.Text</td>
+                <td>
+                    @if(answer.SelectedAnswer.IsCorrect)
+                    {
+                        <span style="color: green;">Correct ✅</span>
+                    }
+                    else
+                    {
+                        <span style="color: red;">Wrong ❌</span>
+                    }
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+    
+</table>
+
+
+
+
+
+
+
+
+

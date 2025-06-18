@@ -1,0 +1,107 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.footerAccount {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #6c63ff;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    padding: 15px
+}
+
+
+
+html {
+    position: relative;
+    min-height: 100vh;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f9;
+}
+
+header {
+    background: #6c63ff;
+    color: white;
+    padding: 20px;
+    padding-top: 0;
+    text-align: center;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #6c63ff;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    padding: 5px
+}
+
+a {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #6c63ff;
+    color: white;
+    transition: all 0.3s ease;
+    min-height: 80vh;
+    border-top: 0.2px solid white;
+}
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 12px 20px;
+        text-decoration: none;
+        margin-bottom: 3px
+    }
+
+        .sidebar a:hover {
+            background-color: darkslateblue;
+        }
+
+.content {
+    flex: 1;
+    padding: 20px;
+    padding-top: 0;
+    overflow-y: auto;
+    height: calc(100vh - 120px);
+}
+
+.sidebar-link.active {
+    background-color: darkslateblue;
+}

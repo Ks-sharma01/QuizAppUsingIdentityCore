@@ -1,0 +1,40 @@
+﻿@model QuizApplication.ViewModels.EditQuestionViewModel
+
+<h3>Edit Question</h3>
+
+<form asp-controller="Admin" asp-action="EditQuestion" method="post" class="mb-4">
+    <input type="hidden" asp-for="QuestionId"/>
+
+    <div class="form-group">
+        <label asp-for="Text"></label>
+        <input asp-for="Text" class="form-control"/>
+
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId">Category</label>
+        <select asp-for="CategoryId" asp-items="Model.CategoryList" class="form-control">
+            <option value="">-- Select Category --</option>
+        </select>
+    </div>
+
+    <h3>Options</h3>
+    
+
+    @for(int i = 0; i<Model.editAnswers.Count; i++)
+    {
+        <div class="form-group" >
+            <input type="hidden" asp-for="@Model.editAnswers[i].AnswerId"/>
+            <label>Option</label>
+            <input asp-for="@Model.editAnswers[i].Text" class="form-control"/>
+            <div class="form-check">
+                <input asp-for="@Model.editAnswers[i].IsCorrect" class="form-check-input"/>
+                <label class="form-check-label">Is Correct?</label>
+            </div>
+
+        </div>
+    }
+    
+    <button type="submit" class="btn btn-primary">Update</button>
+
+</form>

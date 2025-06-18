@@ -1,0 +1,52 @@
+﻿@model Question
+
+@{
+    ViewData["Title"] = "Quiz Question";
+    int questionIndex = (int)ViewBag.QuestionIndex;
+    int totalQuestions = (int)ViewBag.TotalQuestions;
+    int categoryId = (int)ViewBag.CategoryId;
+}
+
+<div class="d-flex justify-content-between">
+<h3 class="mt-2">Question @((questionIndex + 1)) of @totalQuestions</h3>
+
+</div>
+<p><strong>@Model.Text</strong></p>
+
+<form asp-action="SubmitAnswer" method="post" id="quizForm">
+    <input type="hidden" name="questionId" value="@Model.QuestionId" />
+    <input type="hidden" name="categoryId" value="@categoryId" />
+    <input type="hidden" name="questionIndex" value="@questionIndex" /> 
+    <input type="hidden" name="TimeTaken" id="TimeTaken" />
+
+    <div class="d-flex flex-sm-wrap">
+        @foreach (var answer in Model.Answers)
+        {
+            var radioId = $"answer_{answer.AnswerId}"; // Unique ID for each input
+            <div class="w-50 d-flex align-items-center">
+                <input type="radio"
+                       id="@radioId"
+                       name="selectedAnswerId"
+                       value="@answer.AnswerId"
+                       class="mb-2"
+                       required />
+
+                <label for="@radioId" class="mx-2 mb-2">@answer.Text</label>
+            </div>
+        }
+    </div>
+     @if (questionIndex + 1 == totalQuestions) 
+     { 
+         <button type="submit" class="btn btn-success mt-4">Submit</button> 
+     } 
+     else 
+     { 
+        <button type="submit" class="btn btn-success mt-4">Next</button>  
+     }
+</form>
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizApplication - Welcome</title>
+    <style>
+
+        .hero {
+            text-align: center;
+            padding: 30px;
+            padding-top: 30px;
+            background: linear-gradient(to bottom, #6c63ff, #9d94ff);
+            color: white;
+        }
+
+        .features {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>QuizMaster</h1>
+    </header>
+    <section class="hero">
+        <h2>Welcome to QuizMaster!</h2>
+        <p>Your gateway to fun and knowledge.</p>
+
+        <a style="padding: 10px 20px; font-size: 16px; background: #ff8e42; color: white; border: none; border-radius: 5px; cursor: pointer;" asp-controller="Quiz" asp-action="Categories">Play Quiz</a>
+    </section>
+    <section class="features">
+        <div class="feature">
+            <h3>🌟 Explore Topics</h3>
+            <p>Find quizzes on Science, Sports, History, and more!</p>
+        </div>
+        <div class="feature">
+            <h3>🏆 Progress Tracker</h3>
+            <p>Track your scores and aim for the top!</p>
+        </div>
+        <div class="feature">
+            <h3>💡 Learn & Play</h3>
+            <p>Discover fascinating facts while having fun!</p>
+        </div>
+        <div class="feature">
+            <h3>🎉 Weekly Challenges</h3>
+            <p>Complete in challenges and win rewards!</p>
+        </div>
+    </section>
+
+
+</body>
+</html>
+

@@ -1,0 +1,73 @@
+﻿ @model List<Category> 
+
+@{
+    ViewBag.Title = "Select Category";
+}
+
+<h3 class="mt-2">Select Quiz Category</h3>
+
+<select id="categorySelect" class="form-select mb-3">
+    <option value="">-- Select Category --</option>
+    @foreach (var category in Model)
+    {
+        <option value="@category.CategoryId">@category.Name</option>
+    }
+</select>
+
+<h3>Leaderboard</h3>
+
+<table class="table table-bordered table-striped" id="leaderboardTable">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Category</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('#categorySelect').change(function () {
+                var categoryId = $(this).val();
+                if (categoryId) {
+                    $.ajax({
+                        url: '/Admin/Leaderboard',
+                        type: 'GET',
+                        data: { categoryId: categoryId },
+                        success: function (data) {
+                            var tbody = $('#leaderboardTable tbody');
+                            tbody.empty();
+
+                            if (data.length > 0) {
+                                $.each(data, function (i, item) {
+                                    var row = '<tr>' +
+                                        '<td>' + item.rank + '</td>' +
+                                        '<td>' + item.username + '</td>' +
+                                        '<td>' + item.categoryName + '</td>' +
+                                        '<td>' + item.score + '</td>' +
+                                        '</tr>';
+                                    tbody.append(row);
+                                });
+                            } else {
+                                tbody.append('<tr><td colspan="4" class="text-center">No data available.</td></tr>');
+                            }
+                        },
+                        error: function () {
+                            alert('Error loading leaderboard.');
+                        }
+                    });
+                } else {
+                    $('#leaderboardTable tbody').empty();
+                }
+            });
+        });
+    </script>
+}
+

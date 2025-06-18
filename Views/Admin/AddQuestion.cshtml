@@ -1,0 +1,87 @@
+﻿@model QuizApplication.ViewModels.QuestionInputViewModel
+
+@{
+    ViewBag.Title = "Add Question";
+}
+<h2>Add Question</h2>
+
+<form asp-controller="Admin" asp-action="AddQuestion" method="post" id="quizForm">
+    <div class="mb-2">
+        <label asp-for="CategoryId" class="form-label">Category</label>
+        <select asp-for="CategoryId" class="form-select" asp-items="Model.CategoryList" required>   
+                <option value="">-- Select Category --</option> 
+        </select>
+    </div>
+
+    <div>
+        <label>Question Text</label>
+        <input asp-for="Text" class="form-control" placeholder="Enter question" required />
+    </div>
+
+    <h4>Options</h4>
+
+    <div id="answersList">
+         <div class="answer-item mb-2 d-flex align-items-center gap-2"> 
+             <input name="Answers[0].Text" class="form-control w-60" placeholder="Option[1]" required /> 
+             <input type="checkbox" name="Answers[0].IsCorrect" class="iscorrectflag" value="true" /> Correct 
+            <div style="width: 90px"></div>
+        </div>
+        <div class="answer-item mb-2 d-flex align-items-center gap-2">
+            <input name="Answers[1].Text" class="form-control w-60" placeholder="Option[2]" required />
+            <input type="checkbox" name="Answers[1].IsCorrect" class="iscorrectflag" value="true" /> Correct
+            <div style="width: 90px"></div>
+        </div>
+        <div class="answer-item mb-2 d-flex align-items-center gap-2">
+            <input name="Answers[2].Text" class="form-control w-60" placeholder="Option[3]" required />
+            <input type="checkbox" name="Answers[2].IsCorrect" class="iscorrectflag" value="true" /> Correct
+            <div style="width: 90px"></div>
+
+        </div>
+        <div class="answer-item mb-2 d-flex align-items-center gap-2">
+            <input name="Answers[3].Text" class="form-control w-60" placeholder="Option[4]" required />
+            <input type="checkbox" name="Answers[3].IsCorrect" class="iscorrectflag" value="true" /> Correct
+            <div style="width: 90px"></div>
+
+        </div>
+    </div>
+      <span id="errId" class="text-danger mb-3"></span>
+    <div class="d-flex gap-2">
+        <button type="button" id="addAnswer" class="btn btn-success" style="margin-bottom: 40px">Add Option</button>
+
+        <button type="submit" class="btn btn-primary" style="margin-bottom: 40px">Save</button>
+    </div>
+    
+</form>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+        let answerIndex = 4;
+        $('#addAnswer').click(function () {
+
+                var newAnswer = `
+                    <div class="answer-item mb-2 d-flex align-items-center gap-2">
+                        <input name="Answers[${answerIndex}].Text" class="form-control w-60" placeholder="Option[${(answerIndex+1)}]" required />
+                        <input type="checkbox" name="Answers[${answerIndex}].IsCorrect" value="true" class="iscorrectflag" /> Correct
+                        <button type="button" class="btn btn-danger btn-sm remove-answer">Remove</button>
+                    </div>`
+                 
+                $('#answersList').append(newAnswer);
+                answerIndex++;
+               
+            });
+            $('#answersList').on('click', '.remove-answer', function () {
+                $(this).parent().remove();
+            });
+        });
+
+       $("#quizForm").on("submit", (e)=>{
+           const checkedCount = $(".iscorrectflag:checked").length;
+           if(checkedCount == 0){
+               e.preventDefault();
+               $("#errId").text("Please select at least one correct answer")
+           }
+       })
+    </script>
+}

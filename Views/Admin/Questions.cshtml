@@ -1,0 +1,89 @@
+﻿
+@model List<QuizApplication.Models.Question>
+@{
+    ViewBag.Title = "Questions";
+    var categories = Model.Select(q => q.Category).Distinct().ToList(); 
+
+}
+
+<div class="d-flex gap-5 mt-2">
+<a asp-controller="Admin" asp-action="AddQuestion" class="btn btn-success mb-3">Add Question</a>
+    
+</div>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Question</th>
+            @for (int i = 1; i <= 4; i++)
+            {
+                <th>Option @i</th>
+            }
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody id="questionTableBody"> 
+       
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Text</td>
+
+                @foreach (var answer in item.Answers)
+                {
+                    <td>@answer.Text</td>
+                }
+                <td>@item.Category.Name</td>
+                @for (int i = item.Answers.Count; i < 4; i++)
+                {
+                    <td></td>
+                }
+                
+                <td class="d-flex gap-1">
+                    <a asp-controller="Admin" asp-action="EditQuestion" asp-route-id="@item.QuestionId" class="btn btn-success">Edit</a>
+
+                    <!-- Delete Button (opens modal) -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.QuestionId">
+                        Delete
+                    </button>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal-@item.QuestionId" tabindex="-1" aria-labelledby="deleteModalLabel-@item.QuestionId" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form asp-controller="Admin" asp-action="DeleteQuestion" asp-route-id="@item.QuestionId" method="post">
+                                        @Html.AntiForgeryToken()
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel-@item.QuestionId">Confirm Delete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete: <strong>@item.Text</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+        }
+        
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+

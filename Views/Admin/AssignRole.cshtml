@@ -1,0 +1,42 @@
+﻿@*
+
+@model List<QuizApplication.Data.ApplicationUser>
+
+@{
+    ViewBag.Title = "Assign Role";
+}
+
+<h3 class="mt-2">Assign Role</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Current Role</th>
+            <th>Change Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Role</td>
+                <td>
+                    <form method="post" asp-controller="Admin" asp-action="AssignRole">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <div class="d-flex">
+
+                        <select name="role" class="form-select">
+                            <option value="User" selected="@(user.Role == "User")">User</option>
+                            <option value="Admin" selected="@(user.Role == "Admin")">Admin</option>
+                        </select>
+                        <button type="submit" class="btn btn-success">Update</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+*@
