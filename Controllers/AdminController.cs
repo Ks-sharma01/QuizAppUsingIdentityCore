@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
@@ -15,9 +16,13 @@ namespace QuizApplication.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
+            _userManager = userManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
@@ -43,25 +48,45 @@ namespace QuizApplication.Controllers
             return View(categories);
         }
 
-        public IActionResult AssignRole()
+        public async Task<IActionResult> AssignRoleAsync()
         {
-            var users = _context.Users.ToList();
-            return View(users);
+            var users = _userManager.Users.ToList();
+            var model = new List<AssignRoleViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                model.Add(new AssignRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    CurrentRole = roles.FirstOrDefault() ?? "None"
+                });
+            }
+
+            return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AssignRole(int userId, string role)
-        //{
-        //    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-        //    if (user != null)
-        //    {
-        //        user.Role = role;
-        //        _context.Update(user);
-        //       await _context.SaveChangesAsync();
-        //    }
-        //    return RedirectToAction("SelectCategory", "Admin");
-        //}
-        
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(int userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            // Remove old roles
+            await _userManager.RemoveFromRolesAsync(user, userRoles);
+
+            // Assign new role
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+                await _roleManager.CreateAsync(new IdentityRole<int>(role));
+            }
+
+            await _userManager.AddToRoleAsync(user, role);
+
+            return RedirectToAction("AssignRole");
+        }
+
         public async Task<IActionResult> Questions()
         {
             var categories = await _context.Category.ToListAsync();
@@ -80,8 +105,8 @@ namespace QuizApplication.Controllers
             var categories = await _context.Category.ToListAsync();
             var viewModel = new QuestionInputViewModel
             {
-                CategoryList = new SelectList(categories, "CategoryId", "Name"),
-                Answers = new List<AnswerInputViewModel>
+              CategoryList = new SelectList(categories, "CategoryId", "Name"),
+              Answers = new List<AnswerInputViewModel>
               {
                 new AnswerInputViewModel()
               }

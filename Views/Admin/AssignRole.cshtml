@@ -1,12 +1,11 @@
-﻿@*
-
-@model List<QuizApplication.Data.ApplicationUser>
+﻿@using QuizApplication.ViewModels
+@model List<AssignRoleViewModel>
 
 @{
-    ViewBag.Title = "Assign Role";
+    ViewData["Title"] = "Assign Role";
 }
 
-<h3 class="mt-2">Assign Role</h3>
+<h3>Assign Roles</h3>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -21,22 +20,18 @@
         {
             <tr>
                 <td>@user.UserName</td>
-                <td>@user.Role</td>
+                <td>@user.CurrentRole</td>
                 <td>
-                    <form method="post" asp-controller="Admin" asp-action="AssignRole">
-                        <input type="hidden" name="userId" value="@user.Id" />
-                        <div class="d-flex">
-
-                        <select name="role" class="form-select">
-                            <option value="User" selected="@(user.Role == "User")">User</option>
-                            <option value="Admin" selected="@(user.Role == "Admin")">Admin</option>
+                    <form method="post" asp-action="AssignRole">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <select name="role" class="form-select d-inline w-auto me-2">
+                            <option value="User" selected="@(user.CurrentRole == "User")">User</option>
+                            <option value="Admin" selected="@(user.CurrentRole == "Admin")">Admin</option>
                         </select>
                         <button type="submit" class="btn btn-success">Update</button>
-                        </div>
                     </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-*@

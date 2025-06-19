@@ -1,5 +1,6 @@
 ﻿@page
 @model AccessDeniedModel
+@*
 @{
     ViewData["Title"] = "Access denied";
 }
@@ -7,4 +8,48 @@
 <header>
     <h1 class="text-danger">@ViewData["Title"]</h1>
     <p class="text-danger">You do not have access to this resource.</p>
-</header>
+</header> *@
+
+@{
+    ViewData["Title"] = "Access denied";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Denied</title>
+    <style>
+        body {
+            height: 100vh;
+            background-color: red;
+        }
+
+        .access-denied-container {
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center">
+
+    <div class="text-center access-denied-container p-4 border rounded shadow bg-white">
+        <h1 class="text-danger fw-bold">403</h1>
+        <h4 class="mb-3">Access Denied</h4>
+        <p class="text-muted">You do not have permission to view this page.</p>
+        @if (User.IsInRole("User"))
+        {
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Go to Home</a>
+
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Admin" asp-action="SelectCategory" class="btn btn-primary mt-3">Go to Home</a>
+
+        }
+    </div>
+
+</body>
+</html>
+
