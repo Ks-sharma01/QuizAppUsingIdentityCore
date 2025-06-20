@@ -78,7 +78,7 @@ static async Task SeedAdmin(UserManager<ApplicationUser> _userManager)
     if (adminUser == null)
     {
         adminUser = new ApplicationUser { UserName = adminEmail, Email = adminEmail };
-        await _userManager.CreateAsync(adminUser, //Admin Password);
+        await _userManager.CreateAsync(adminUser, "Admin@123");
         await _userManager.AddToRoleAsync(adminUser, "Admin");
     }
 }
